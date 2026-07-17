@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./scss/main.css">
     <title>Quickdraw</title>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>Test</p>
-    <p>Test 2</p>
+    <h1>Quickdraw Battle Simulator</h1>
+    <div class="instruction-text js_instructional-text"></div>
+    <div class="team-selector js_team-selector hidden">
+        <button class="js_team-btn" data-team="bandit">The Bandits</button>
+        <button class="js_team-btn" data-team="law">The Law</button>
+    </div>
+    <div class="card-holder js_card-holder hidden">
+        <div class="bandit-holder">
+            <img class="card js_card-select" src="./img/bandit_brother.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_bruiser.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_captain-blythe.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_crazy-carl.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_dan-o-mite.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_sister.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_snake.png" alt="">
+            <img class="card js_card-select" src="./img/bandit_sniper.png" alt="">
+        </div>
+        <button class="js_confirm-units" disabled>Confirm</button>
+    </div>
+
+    <script type="module" src="./scripts/script.js"></script>
 </body>
 </html>
