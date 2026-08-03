@@ -16,15 +16,47 @@ h3 {
   display: none;
 }
 
-.bandit-holder {
+.card-holder.bandits .bandit-holder {
   display: grid;
+}
+
+.card-holder.law .law-holder {
+  display: grid;
+}
+
+.bandit-holder,
+.law-holder {
+  display: none;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
 }
-.bandit-holder img {
+.bandit-holder img,
+.law-holder img {
+  width: 100%;
+}
+
+.main-street.bandits .bandit-location-container {
+  display: grid;
+}
+
+.main-street.law .law-location-container {
+  display: grid;
+}
+
+.bandit-location-container,
+.law-location-container {
+  display: none;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+.bandit-location-container img,
+.law-location-container img {
   width: 100%;
 }
 
@@ -55,9 +87,6 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-.arena__bandits .street, .arena__law .street {
-  background-color: brown;
 }
 .arena__bandits img, .arena__law img {
   max-width: 100%;
