@@ -10,10 +10,15 @@
     <h1>Quickdraw Battle Simulator</h1>
     <div class="instruction-text js_instructional-text"></div>
     <div class="team-selector js_team-selector hidden">
-        <button class="js_team-btn" data-team="Bandits">The Bandits</button>
-        <button class="js_team-btn" data-team="Law">The Law</button>
+        <div class="team-selector-btns">
+            <button class="js_team-btn" data-team="Bandits">The Bandits</button>
+            <button class="js_team-btn" data-team="Law">The Law</button>
+        </div>
     </div>
     <div class="card-holder js_card-holder hidden">
+        <div class="confirm-btn-holder">
+            <button class="js_confirm-units" disabled>Confirm</button>
+        </div>
         <div class="bandit-holder">
             <img class="card js_card-select" src="./img/bandit_captain-blythe.png" alt="" data-name="Captain Blythe">
             <img class="card js_card-select" src="./img/bandit_bruiser.png" alt="" data-name="Bruiser">
@@ -34,42 +39,37 @@
             <img class="card js_card-select" src="./img/law_retired-lawman.png" alt="" data-name="Retired Lawman">
             <img class="card js_card-select" src="./img/law_trainee.png" alt="" data-name="Trainee">
         </div>
-        <button class="js_confirm-units" disabled>Confirm</button>
     </div>
     <div class="main-street js_main-street hidden">
-        <div class="bandit-location-container"></div>
-        <div class="law-location-container"></div>
-        <button class="js_confirm-locations">Confirm</button>
-    </div>
-    <div class="arena">
-        <div class="arena__bandits">
-            <div class="roof">
-                <h3>ROOF</h3>
-                <!-- <img src="./img/bandit_brother.png" alt=""> -->
-            </div>
-            <div class="building">
-                <h3>BUILDING</h3>
-                <!-- <img src="./img/bandit_sniper.png" alt="">
-                <img src="./img/bandit_snake.png" alt=""> -->
-            </div>
-            <div class="street">
-                <h3>STREET</h3>
-                <!-- <img src="./img/bandit_bruiser.png" alt=""> -->
-            </div>
+        <div class="confirm-btn-holder">
+            <button class="js_confirm-locations" disabled>Confirm</button>
         </div>
-        <div class="arena__law">
-            <div class="street">
-                <h3>STREET</h3>
-                <!-- <img src="./img/law_lawman.png" alt="">
-                <img src="./img/law_doc.png" alt=""> -->
+        <div class="bandits-location-container"></div>
+        <div class="law-location-container"></div>
+    </div>
+    <div class="arena js_arena hidden">
+        <div class="locations-container">
+            <div class="locations-container__bandits">
+                <div class="roof">
+                    <h3>ROOF</h3>
+                </div>
+                <div class="building">
+                    <h3>BUILDING</h3>
+                </div>
+                <div class="street">
+                    <h3>STREET</h3>
+                </div>
             </div>
-            <div class="building">
-                <h3>BUILDING</h3>
-                <!-- <img src="./img/law_sheriff-mcgraw.png" alt=""> -->
-            </div>
-            <div class="roof">
-                <h3>ROOF</h3>
-                <!-- <img src="./img/law_trainee.png" alt=""> -->
+            <div class="locations-container__law">
+                <div class="street">
+                    <h3>STREET</h3>
+                </div>
+                <div class="building">
+                    <h3>BUILDING</h3>
+                </div>
+                <div class="roof">
+                    <h3>ROOF</h3>
+                </div>
             </div>
         </div>
     </div>

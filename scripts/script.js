@@ -13,6 +13,7 @@ let teamBtns = document.querySelectorAll(".js_team-btn");
 let cards = document.querySelectorAll(".js_card-select");
 let confirmUnitsBtn = document.querySelector(".js_confirm-units");
 let mainStreet = document.querySelector(".js_main-street");
+let arena = document.querySelector(".js_arena");
 let confirmLocationsBtn = document.querySelector(".js_confirm-locations");
 
 let playerOneTeam = "";
@@ -121,18 +122,28 @@ cards.forEach(card => {
             }
         }
         if (activePlayer === "Player 2") {
+            console.log("here we go!");
+            console.log(playerTwoObject.unitsSelected);
             if (card.classList.contains('card--selected')) {
                 card.classList.remove('card--selected');
                 playerTwoObject.unitsSelected--;
-            } else if (playerTwoUnitsSelected < 4) {
+                console.log("subtracting!");
+                console.log(playerTwoObject.unitsSelected);
+            } else if (playerTwoObject.unitsSelected < 4) {
                 card.classList.add('card--selected');
                 playerTwoObject.unitsSelected++;
+                console.log("adding! less than ");
+                console.log(playerTwoObject.unitsSelected);
             }
             if (playerTwoObject.unitsSelected === 4) {
                 confirmUnitsBtn.disabled = false;
+                console.log("4!");
+                console.log(playerTwoObject.unitsSelected);
             }
             if (playerTwoObject.unitsSelected !== 4) {
                 confirmUnitsBtn.disabled = true;
+                console.log("not 4");
+                console.log(playerTwoObject.unitsSelected);
             }
         }
     });
@@ -173,13 +184,16 @@ function placeUnits() {
     mainStreet.classList.remove("hidden");
     updateInstructionalText("Choose the locations for your units.");
     let num = 0;
+    let player = "";
 
     let teamArray = [];
     if (activePlayer === "Player 1") {
         teamArray = playerOneObject;
+        player = "player-1";
     }
     if (activePlayer === "Player 2") {
         teamArray = playerTwoObject;
+        player = "player-2";
     }
 
     if (teamArray.team === "Bandits") {
@@ -191,61 +205,117 @@ function placeUnits() {
         mainStreet.classList.add("law");
     }
     
-    teamArray = teamArray.units;
-    teamArray.forEach(unit => {
+    let units = teamArray.units
+    units.forEach(unit => {
         let newDiv = document.createElement('div');
+
         newDiv.innerHTML = `
             <img src="${unit.src}">
-            <div class="location-selection-container">
-                <input type="radio" id="roof-${num}" name="location-${num}" value="Roof" data-name="${unit.name}">
-                <label for="roof-${num}">Roof</label><br>
+            <label class="sr-only" for="locations-${num}-${player}">${unit.name} location</label>
+            <select class="locations-select" name="locations-${num}-${player}" id="locations-${num}-${player}" data-name="${unit.name}">
+                <option value="Choose" selected>Choose an option</option>
+                <option value="Street">Street</option>
+                <option value="Building">Building</option>
+                <option value="Roof">Roof</option>
+            </select>
+        `;
 
-                <input type="radio" id="building-${num}" name="location-${num}" value="Building" data-name="${unit.name}">
-                <label for="building-${num}">Building</label><br>
-
-                <input type="radio" id="street-${num}" name="location-${num}" value="Street" data-name="${unit.name}">
-                <label for="street-${num}">Street</label>
-            </div>
-        `
+        newDiv.classList.add("locations-img-select-holder")
 
         if (unit.team === "Bandits") {
-            document.querySelector(".main-street .bandit-location-container").prepend(newDiv);
+            document.querySelector(".main-street .bandits-location-container").append(newDiv);
         } else {
-            document.querySelector(".main-street .law-location-container").prepend(newDiv);
+            document.querySelector(".main-street .law-location-container").append(newDiv);
         }
         num++;
     })
+
+    let tempTeam = teamArray.team.toLowerCase();
+    addSelectEventLisenters(tempTeam);
+}
+
+function addSelectEventLisenters(team) {
+    const selects = document.querySelectorAll(`.main-street .${team}-location-container .locations-select`);
+
+    let streetNumber = 0;
+    let buildingNumber = 0;
+    let roofNumber = 0;
+
+    selects.forEach(select => {
+        select.addEventListener('change', () => {
+            let allValues = Array.from(selects).map(s => s.value);
+
+            streetNumber = 0;
+            buildingNumber = 0;
+            roofNumber = 0;
+
+            allValues.forEach(value => {
+                if (value === "Street") {
+                    streetNumber++;
+                }
+                if (value === "Building") {
+                    buildingNumber++;
+                }
+                if (value === "Roof") {
+                    roofNumber++;
+                }
+            
+                if (streetNumber >= 3) {
+                    updateInstructionalText("You can't have more than 2 units in the Street.");
+                    confirmLocationsBtn.disabled = true;
+                } else if (buildingNumber >= 3) {
+                    updateInstructionalText("You can't have more than 2 units in the Building.");
+                    confirmLocationsBtn.disabled = true;
+                } else if (roofNumber >= 2) {
+                    updateInstructionalText("You can't have more than 1 unit on the Roof.");
+                    confirmLocationsBtn.disabled = true;
+                } else if ((streetNumber + buildingNumber + roofNumber) === 4) {
+                    confirmLocationsBtn.disabled = false;
+                    updateInstructionalText("Looking good! Choose confirm when ready.");
+                } else {
+                    updateInstructionalText("Choose the locations for your units.");
+                    confirmLocationsBtn.disabled = true;
+                }
+            })
+        });
+    });
 }
 
 confirmLocationsBtn.addEventListener('click', () => {
     let playerArray = [];
+    let team = "";
+
     if (activePlayer === "Player 1") {
+        team = playerOneObject.team;
         playerArray = playerOneObject.units;
     }
     if (activePlayer === "Player 2") {
+        team = playerTwoObject.team;
         playerArray = playerTwoObject.units;
     }
 
-    let checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
-    if (checkedRadios.length < 4) return;
-    checkedRadios.forEach(radio => {
-        let unitName = radio.getAttribute('data-name');
-        let location = radio.getAttribute('value');
-        
+    console.log(playerArray);
+
+    let selects = document.querySelectorAll(`.main-street .${team.toLowerCase()}-location-container .locations-select`);
+
+    selects.forEach(select => {
+        let value = select.value;
+        let name = select.dataset.name;
+
         playerArray.forEach(unit => {
-            if (unit.name === unitName) {
-                unit.location = location;
+            if (unit.name === name) {
+                unit.location = value;
             }
         })
     })
 
-    console.log(playerArray);
     mainStreet.classList.add("hidden");
 
     if (activePlayer === "Player 1") {
         activePlayer = "Player 2";
         pickUnits();
     } else {
+        arena.classList.remove("hidden");
         placeInLocations("Player 1");
         placeInLocations("Player 2");
         beginFight();
@@ -265,9 +335,9 @@ function placeInLocations(player) {
     }
 
     if (team === "Bandits") {
-        let street = document.querySelector(".arena__bandits .street");
-        let building = document.querySelector(".arena__bandits .building");
-        let roof = document.querySelector(".arena__bandits .roof");
+        let street = document.querySelector(".locations-container__bandits .street");
+        let building = document.querySelector(".locations-container__bandits .building");
+        let roof = document.querySelector(".locations-container__bandits .roof");
 
         array.forEach(unit => {
             let myImage = document.createElement('img');
@@ -287,9 +357,9 @@ function placeInLocations(player) {
     }
 
     if (team === "Law") {
-        let street = document.querySelector(".arena__law .street");
-        let building = document.querySelector(".arena__law .building");
-        let roof = document.querySelector(".arena__law .roof");
+        let street = document.querySelector(".locations-container__law .street");
+        let building = document.querySelector(".locations-container__law .building");
+        let roof = document.querySelector(".locations-container__law .roof");
 
         array.forEach(unit => {
             let myImage = document.createElement('img');
@@ -311,7 +381,7 @@ function placeInLocations(player) {
 
 function beginFight() {
     activePlayer = determineFirstPlayer();
-    activePlayer.takeTurn();
+    updateInstructionalText("Get ready for a duel!");
 }
 
 function determineFirstPlayer() {
@@ -319,7 +389,7 @@ function determineFirstPlayer() {
 };
 
 function takeTurn() {
-    
+
 }
 
 init();

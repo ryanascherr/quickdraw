@@ -38,7 +38,7 @@ h3 {
   width: 100%;
 }
 
-.main-street.bandits .bandit-location-container {
+.main-street.bandits .bandits-location-container {
   display: grid;
 }
 
@@ -46,7 +46,7 @@ h3 {
   display: grid;
 }
 
-.bandit-location-container,
+.bandits-location-container,
 .law-location-container {
   display: none;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -55,7 +55,7 @@ h3 {
   width: 100%;
   margin: 0 auto;
 }
-.bandit-location-container img,
+.bandits-location-container img,
 .law-location-container img {
   width: 100%;
 }
@@ -67,27 +67,99 @@ h3 {
   border: 5px solid yellow;
 }
 
-.arena {
+.locations-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
-.arena__bandits, .arena__law {
+.locations-container__bandits, .locations-container__law {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   align-items: center;
 }
-.arena__bandits .roof,
-.arena__bandits .building,
-.arena__bandits .street, .arena__law .roof,
-.arena__law .building,
-.arena__law .street {
+.locations-container__bandits .roof,
+.locations-container__bandits .building,
+.locations-container__bandits .street, .locations-container__law .roof,
+.locations-container__law .building,
+.locations-container__law .street {
   max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.arena__bandits img, .arena__law img {
+.locations-container__bandits img, .locations-container__law img {
   max-width: 100%;
+}
+
+.instruction-text {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+button {
+  background-color: #c14b36;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  border: 2px solid #c14b36;
+  border-radius: 4px;
+  transition: 0.3s all ease-in-out;
+}
+
+button:hover:not(:disabled) {
+  cursor: pointer;
+  background-color: #fff;
+  color: #c14b36;
+}
+
+button:disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
+.team-selector-btns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.confirm-btn-holder {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+select {
+  background-color: #c14b36;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.locations-img-select-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card:hover,
+select:hover {
+  cursor: pointer;
 }/*# sourceMappingURL=main.css.map */
