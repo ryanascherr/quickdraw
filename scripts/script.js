@@ -6,37 +6,30 @@ import { units } from "./units.js";
 // Player 1 chooses team, then units, then locations
 // Player 2 chooses units, then locations
 
-let instructionalText = document.querySelector(".js_instructional-text");
 let teamSelector = document.querySelector(".js_team-selector");
-let cardHolder = document.querySelector(".js_card-holder");
+let unitSelector = document.querySelector(".js_unit-select");
 let teamBtns = document.querySelectorAll(".js_team-btn");
 let cards = document.querySelectorAll(".js_card-select");
 let confirmUnitsBtn = document.querySelector(".js_confirm-units");
-let mainStreet = document.querySelector(".js_main-street");
+let locationSelector = document.querySelector(".js_location-select");
 let arena = document.querySelector(".js_arena");
 let confirmLocationsBtn = document.querySelector(".js_confirm-locations");
-
-let playerOneTeam = "";
-let playerOneUnitsSelected = 0;
-let playerTwoTeam = "";
-let playerTwoUnitsSelected = 0;
-let playerOneTeamArray = [];
-let isPlayerOneSetup = true;
-let isPlayerTwoSetup = false;
 let activePlayer = "Player 1";
 
 let playerOneObject = {
     name: "Player 1",
     team: "",
     unitsSelected: 0,
-    units: []
+    units: [],
+    ammo: []
 }
 
 let playerTwoObject = {
     name: "Player 2",
     team: "",
     unitsSelected: 0,
-    units: []
+    units: [],
+    ammo: []
 }
 
 // let brother = new Brother("Brother", 3, "Bandit", 5, "./img/bandit_brother.png");
@@ -57,6 +50,8 @@ let playerTwoObject = {
 function init() {
     playerOneChooseTeam();
 }
+
+// CHOOSE TEAM START
 
 function playerOneChooseTeam() {
     updateInstructionalText("Player 1: Choose your team.");
@@ -84,8 +79,11 @@ teamBtns.forEach(btn => {
     });
 });
 
+// CHOOSE TEAM END
+// CHOOSE UNITS START
+
 function pickUnits() {
-    cardHolder.classList.remove("hidden");
+    unitSelector.classList.remove("hidden");
     let playerObject;
 
     if (activePlayer === "Player 1") {
@@ -95,11 +93,11 @@ function pickUnits() {
     }
 
     if (playerObject.team === "Bandits") {
-        cardHolder.classList.remove("law");
-        cardHolder.classList.add("bandits");
+        document.querySelector(".unit-select__law").classList.remove("unit-select__law--visible");
+        document.querySelector(".unit-select__bandits").classList.add("unit-select__bandits--visible");
     } else {
-        cardHolder.classList.remove("bandits");
-        cardHolder.classList.add("law");
+        document.querySelector(".unit-select__bandits").classList.remove("unit-select__bandits--visible");
+        document.querySelector(".unit-select__law").classList.add("unit-select__law--visible");
     }
     updateInstructionalText(playerObject.name + ": Choose the 4 units you want to deploy The other 4 will be used for their Ammo Value.");
 }
@@ -122,36 +120,28 @@ cards.forEach(card => {
             }
         }
         if (activePlayer === "Player 2") {
-            console.log("here we go!");
-            console.log(playerTwoObject.unitsSelected);
             if (card.classList.contains('card--selected')) {
                 card.classList.remove('card--selected');
                 playerTwoObject.unitsSelected--;
-                console.log("subtracting!");
-                console.log(playerTwoObject.unitsSelected);
             } else if (playerTwoObject.unitsSelected < 4) {
                 card.classList.add('card--selected');
                 playerTwoObject.unitsSelected++;
-                console.log("adding! less than ");
-                console.log(playerTwoObject.unitsSelected);
             }
             if (playerTwoObject.unitsSelected === 4) {
                 confirmUnitsBtn.disabled = false;
-                console.log("4!");
-                console.log(playerTwoObject.unitsSelected);
             }
             if (playerTwoObject.unitsSelected !== 4) {
                 confirmUnitsBtn.disabled = true;
-                console.log("not 4");
-                console.log(playerTwoObject.unitsSelected);
             }
         }
     });
 });
 
 confirmUnitsBtn.addEventListener('click', () => {
+    confirmAmmo();
     confirmUnits();
     placeUnits();
+    confirmUnitsBtn.disabled = true;
 })
 
 function confirmUnits() {
@@ -179,10 +169,42 @@ function confirmUnits() {
     });
 }
 
+function confirmAmmo() {
+    let team = "";
+    if (activePlayer === "Player 1") {
+        team = playerOneObject.team.toLowerCase();
+    }
+    if (activePlayer === "Player 2") {
+        team = playerTwoObject.team.toLowerCase();
+    }
+
+    let ammoCards = document.querySelectorAll(`.unit-select__${team} .card:not(.card--selected)`);
+
+    ammoCards.forEach(card => {
+        let name = card.dataset.name;
+
+        units.forEach(unit => {
+            if (unit.name === name) {
+                if (activePlayer === "Player 1") {
+                    console.log("Player 1", name);
+                    playerOneObject.ammo.push(unit);
+                }
+                if (activePlayer === "Player 2") {
+                    console.log("Player 2", name);
+                    playerTwoObject.ammo.push(unit);
+                }
+            }
+        })
+    })
+}
+
+// CHOOSE UNITS END
+// CHOOSE LOCATIONS START
+
 function placeUnits() {
-    cardHolder.classList.add("hidden");
-    mainStreet.classList.remove("hidden");
-    updateInstructionalText("Choose the locations for your units.");
+    unitSelector.classList.add("hidden");
+    locationSelector.classList.remove("hidden");
+    updateInstructionalText("Choose the locations for your units. Up to 2 units can be in the street, up to 2 units can be in the building, and up to 1 unit can be on the roof.");
     let num = 0;
     let player = "";
 
@@ -197,12 +219,12 @@ function placeUnits() {
     }
 
     if (teamArray.team === "Bandits") {
-        mainStreet.classList.remove("law");
-        mainStreet.classList.add("bandits");
+        document.querySelector(".location-select__law").classList.remove("location-select__law--visible");
+        document.querySelector(".location-select__bandits").classList.add("location-select__bandits--visible");
     }
     if (teamArray.team === "Law") {
-        mainStreet.classList.remove("bandits");
-        mainStreet.classList.add("law");
+        document.querySelector(".location-select__bandits").classList.remove("location-select__bandits--visible");
+        document.querySelector(".location-select__law").classList.add("location-select__law--visible");
     }
     
     let units = teamArray.units
@@ -223,9 +245,9 @@ function placeUnits() {
         newDiv.classList.add("locations-img-select-holder")
 
         if (unit.team === "Bandits") {
-            document.querySelector(".main-street .bandits-location-container").append(newDiv);
+            document.querySelector(".location-select__bandits").append(newDiv);
         } else {
-            document.querySelector(".main-street .law-location-container").append(newDiv);
+            document.querySelector(".location-select__law").append(newDiv);
         }
         num++;
     })
@@ -235,7 +257,7 @@ function placeUnits() {
 }
 
 function addSelectEventLisenters(team) {
-    const selects = document.querySelectorAll(`.main-street .${team}-location-container .locations-select`);
+    const selects = document.querySelectorAll(`.location-select__${team} .locations-select`);
 
     let streetNumber = 0;
     let buildingNumber = 0;
@@ -273,7 +295,7 @@ function addSelectEventLisenters(team) {
                     confirmLocationsBtn.disabled = false;
                     updateInstructionalText("Looking good! Choose confirm when ready.");
                 } else {
-                    updateInstructionalText("Choose the locations for your units.");
+                    updateInstructionalText("Choose the locations for your units. Up to 2 units can be in the street, up to 2 units can be in the building, and up to 1 unit can be on the roof.");
                     confirmLocationsBtn.disabled = true;
                 }
             })
@@ -282,6 +304,7 @@ function addSelectEventLisenters(team) {
 }
 
 confirmLocationsBtn.addEventListener('click', () => {
+    confirmLocationsBtn.disabled = true;
     let playerArray = [];
     let team = "";
 
@@ -294,9 +317,7 @@ confirmLocationsBtn.addEventListener('click', () => {
         playerArray = playerTwoObject.units;
     }
 
-    console.log(playerArray);
-
-    let selects = document.querySelectorAll(`.main-street .${team.toLowerCase()}-location-container .locations-select`);
+    let selects = document.querySelectorAll(`.location-select .location-select__${team.toLowerCase()} .locations-select`);
 
     selects.forEach(select => {
         let value = select.value;
@@ -309,7 +330,7 @@ confirmLocationsBtn.addEventListener('click', () => {
         })
     })
 
-    mainStreet.classList.add("hidden");
+    locationSelector.classList.add("hidden");
 
     if (activePlayer === "Player 1") {
         activePlayer = "Player 2";
@@ -321,6 +342,9 @@ confirmLocationsBtn.addEventListener('click', () => {
         beginFight();
     }
 })
+
+// CHOOSE LOCATIONS END
+// PLACE UNITS START
 
 function placeInLocations(player) {
     let team = "";
@@ -340,18 +364,29 @@ function placeInLocations(player) {
         let roof = document.querySelector(".locations-container__bandits .roof");
 
         array.forEach(unit => {
+            let myDiv = document.createElement('div');
+            myDiv.classList.add("img-container");
+
             let myImage = document.createElement('img');
             myImage.src = unit.src;
             myImage.alt = '';
 
+            let ammoImage = document.createElement('img');
+            ammoImage.classList.add("ammo");
+            ammoImage.src = "./img/bandit_card-back.png";
+            ammoImage.alt = '';
+
+            myDiv.appendChild(myImage);
+            myDiv.appendChild(ammoImage);
+
             if (unit.location === "Street") {
-                street.appendChild(myImage);
+                street.appendChild(myDiv);
             }
             if (unit.location === "Building") {
-                building.appendChild(myImage);
+                building.appendChild(myDiv);
             }
             if (unit.location === "Roof") {
-                roof.appendChild(myImage);
+                roof.appendChild(myDiv);
             }
         })
     }
@@ -362,30 +397,79 @@ function placeInLocations(player) {
         let roof = document.querySelector(".locations-container__law .roof");
 
         array.forEach(unit => {
+            let myDiv = document.createElement('div');
+            myDiv.classList.add("img-container");
+
             let myImage = document.createElement('img');
             myImage.src = unit.src;
             myImage.alt = '';
 
+            let ammoImage = document.createElement('img');
+            ammoImage.classList.add("ammo");
+            ammoImage.src = "./img/law_card-back.png";
+            ammoImage.alt = '';
+
+            myDiv.appendChild(myImage);
+            myDiv.appendChild(ammoImage);
+
             if (unit.location === "Street") {
-                street.appendChild(myImage);
+                street.appendChild(myDiv);
             }
             if (unit.location === "Building") {
-                building.appendChild(myImage);
+                building.appendChild(myDiv);
             }
             if (unit.location === "Roof") {
-                roof.appendChild(myImage);
+                roof.appendChild(myDiv);
             }
         })
     }
 }
 
+// PLACE UNITS END
+// BEGIN DUEL START
+
 function beginFight() {
     activePlayer = determineFirstPlayer();
     updateInstructionalText("Get ready for a duel!");
+
+    console.log(playerOneObject);
+    console.log(playerTwoObject);
 }
 
 function determineFirstPlayer() {
-    return "Player 1";
+    let isMysteriousStrangerInPlay = false;
+
+    playerOneObject.units.forEach(unit => {
+        if (unit.name === "Mysterious Stranger") {
+            isMysteriousStrangerInPlay = true;
+        }
+    });
+
+    playerTwoObject.units.forEach(unit => {
+        if (unit.name === "Mysterious Stranger") {
+            isMysteriousStrangerInPlay = true;
+        }
+    });
+
+    if (isMysteriousStrangerInPlay) {
+        console.log("Mysterious Stranger is in play. Law goes first.");
+        if (playerOneObject.team === "Bandits") {
+            activePlayer = "Player 2";
+            console.log("Player 2 goes first.");
+        } else {
+            activePlayer = "Player 1";
+            console.log("Player 1 goes first.");
+        }
+    } else {
+        console.log("Mysterious Stranger is not in play. Bandits goes first.");
+        if (playerOneObject.team === "Bandits") {
+            activePlayer = "Player 1";
+            console.log("Player 1 goes first.");
+        } else {
+            activePlayer = "Player 2";
+            console.log("Player 2 goes first.");
+        }
+    }
 };
 
 function takeTurn() {

@@ -10,16 +10,16 @@
     <h1>Quickdraw Battle Simulator</h1>
     <div class="instruction-text js_instructional-text"></div>
     <div class="team-selector js_team-selector hidden">
-        <div class="team-selector-btns">
+        <div class="btn-holder btn-holder--multiple">
             <button class="js_team-btn" data-team="Bandits">The Bandits</button>
             <button class="js_team-btn" data-team="Law">The Law</button>
         </div>
     </div>
-    <div class="card-holder js_card-holder hidden">
-        <div class="confirm-btn-holder">
+    <div class="unit-select js_unit-select hidden">
+        <div class="btn-holder">
             <button class="js_confirm-units" disabled>Confirm</button>
         </div>
-        <div class="bandit-holder">
+        <div class="unit-select__bandits">
             <img class="card js_card-select" src="./img/bandit_captain-blythe.png" alt="" data-name="Captain Blythe">
             <img class="card js_card-select" src="./img/bandit_bruiser.png" alt="" data-name="Bruiser">
             <img class="card js_card-select" src="./img/bandit_sister.png" alt="" data-name="Sister">
@@ -29,7 +29,7 @@
             <img class="card js_card-select" src="./img/bandit_dan-o-mite.png" alt="" data-name="Dan O Mite">
             <img class="card js_card-select" src="./img/bandit_snake.png" alt="" data-name="Snake">
         </div>
-        <div class="law-holder">
+        <div class="unit-select__law">
             <img class="card js_card-select" src="./img/law_sheriff-mcgraw.png" alt="" data-name="Sheriff McGraw">
             <img class="card js_card-select" src="./img/law_mysterious-stranger.png" alt="" data-name="Mysterious Stranger">
             <img class="card js_card-select" src="./img/law_lawman.png" alt="" data-name="Lawman">
@@ -40,12 +40,12 @@
             <img class="card js_card-select" src="./img/law_trainee.png" alt="" data-name="Trainee">
         </div>
     </div>
-    <div class="main-street js_main-street hidden">
-        <div class="confirm-btn-holder">
+    <div class="location-select js_location-select hidden">
+        <div class="btn-holder">
             <button class="js_confirm-locations" disabled>Confirm</button>
         </div>
-        <div class="bandits-location-container"></div>
-        <div class="law-location-container"></div>
+        <div class="location-select__bandits bandits-location-container"></div>
+        <div class="location-select__law law-location-container"></div>
     </div>
     <div class="arena js_arena hidden">
         <div class="locations-container">

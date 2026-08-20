@@ -1,3 +1,48 @@
+.btn-holder {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.btn-holder--multiple {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+button {
+  background-color: #c14b36;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  border: 2px solid #c14b36;
+  border-radius: 4px;
+  transition: 0.3s all ease-in-out;
+}
+button:disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  cursor: pointer;
+  background-color: #fff;
+  color: #c14b36;
+}
+
+.unit-select__bandits, .unit-select__law {
+  display: none;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+.unit-select__bandits img, .unit-select__law img {
+  width: 100%;
+}
+.unit-select__bandits--visible, .unit-select__law--visible {
+  display: grid;
+}
+
 body {
   font-family: sans-serif;
   background-color: gray;
@@ -16,16 +61,7 @@ h3 {
   display: none;
 }
 
-.card-holder.bandits .bandit-holder {
-  display: grid;
-}
-
-.card-holder.law .law-holder {
-  display: grid;
-}
-
-.bandit-holder,
-.law-holder {
+.location-select__bandits, .location-select__law {
   display: none;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 1rem;
@@ -33,31 +69,11 @@ h3 {
   width: 100%;
   margin: 0 auto;
 }
-.bandit-holder img,
-.law-holder img {
+.location-select__bandits img, .location-select__law img {
   width: 100%;
 }
-
-.main-street.bandits .bandits-location-container {
+.location-select__bandits--visible, .location-select__law--visible {
   display: grid;
-}
-
-.main-street.law .law-location-container {
-  display: grid;
-}
-
-.bandits-location-container,
-.law-location-container {
-  display: none;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-}
-.bandits-location-container img,
-.law-location-container img {
-  width: 100%;
 }
 
 .card {
@@ -97,42 +113,6 @@ h3 {
   padding: 1rem 0;
 }
 
-button {
-  background-color: #c14b36;
-  color: #fff;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  border: none;
-  border: 2px solid #c14b36;
-  border-radius: 4px;
-  transition: 0.3s all ease-in-out;
-}
-
-button:hover:not(:disabled) {
-  cursor: pointer;
-  background-color: #fff;
-  color: #c14b36;
-}
-
-button:disabled {
-  opacity: 50%;
-  cursor: not-allowed;
-}
-
-.team-selector-btns {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.confirm-btn-holder {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
 select {
   background-color: #c14b36;
   color: #fff;
@@ -162,4 +142,19 @@ select {
 .card:hover,
 select:hover {
   cursor: pointer;
+}
+
+.img-container {
+  position: relative;
+}
+.img-container img {
+  border-radius: 10px;
+}
+
+.ammo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(0.75rem, 0.75rem);
+  z-index: -1;
 }/*# sourceMappingURL=main.css.map */
